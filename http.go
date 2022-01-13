@@ -24,7 +24,7 @@ func serveHTTP() {
 	router := gin.Default()
 	router.Use(CORSMiddleware())
 	
-	if _, err := os.Stat("./web"); !os.IsNotExist(err) {
+	if _, err := os.Stat("web"); !os.IsNotExist(err) {
 		router.LoadHTMLGlob("web/templates/*")
 		router.GET("/", HTTPAPIServerIndex)
 		router.GET("/stream/player/:uuid", HTTPAPIServerStreamPlayer)
@@ -33,7 +33,7 @@ func serveHTTP() {
 	router.GET("/stream/codec/:uuid", HTTPAPIServerStreamCodec)
 	router.POST("/stream", HTTPAPIServerStreamWebRTC2)
 
-	router.StaticFS("/static", http.Dir("web/static"))
+	router.StaticFS("/static", http.Dir("output/web/static"))
 	err := router.Run(Config.Server.HTTPPort)
 	if err != nil {
 		log.Fatalln("Start HTTP Server error", err)
